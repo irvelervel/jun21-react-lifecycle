@@ -3,6 +3,8 @@ import { Card } from 'react-bootstrap'
 
 class MovieDetail extends Component {
 
+    timer = null
+
     state = {
         // here I will store the data coming from the fetch
         movieDetails: null
@@ -27,8 +29,11 @@ class MovieDetail extends Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.fetchMovieData()
+        this.timer = setInterval(() => {
+            console.log('time flies!')
+        }, 1000)
     }
 
     componentDidUpdate(previousProps, previousState) {
@@ -48,6 +53,11 @@ class MovieDetail extends Component {
         if (previousProps.selectedMovie !== this.props.selectedMovie) {
             this.fetchMovieData()
         }
+    }
+
+    componentWillUnmount() {
+        console.log('bye bye!')
+        clearInterval(this.timer)
     }
 
     render() {

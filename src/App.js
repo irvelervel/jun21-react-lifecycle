@@ -1,8 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import { Component } from 'react'
-import { Container, Row, Col, Form } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 import MovieDetail from './components/MovieDetail'
+import MovieDropdown from './components/MovieDropdown'
 
 // the goal for today is to work with lifecycle methods!
 // all the lifecycle methods in a React Components just work in a Class
@@ -35,6 +36,7 @@ class App extends Component {
   state = {
     // initially, for declaring the state object you needed a constructor!
     movieTitle: 'Batman Begins',
+    showMovie: true,
   }
 
   componentDidMount() {
@@ -54,6 +56,12 @@ class App extends Component {
     console.log(this)
   }
 
+  setMovie = (dropdownMovie) => {
+    this.setState({
+      movieTitle: dropdownMovie,
+    })
+  }
+
   render() {
     // render() is a lifecycle method
     // it's the method in charge of returning the JSX out of your class component
@@ -68,31 +76,17 @@ class App extends Component {
           <Row>
             <Col md={{ span: 6, offset: 3 }}>
               <h2>MOVIE CHOOSER</h2>
-              <Form>
-                <Form.Group>
-                  <Form.Label>Choose a movie!</Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={this.state.movieTitle}
-                    onChange={(e) => {
-                      this.setState({
-                        movieTitle: e.target.value,
-                      })
-                    }}
-                  >
-                    <option>Batman Begins</option>
-                    <option>Man of Steel</option>
-                    <option>Wonder Woman</option>
-                  </Form.Control>
-                </Form.Group>
-              </Form>
+              <MovieDropdown movieTitle={this.state.movieTitle} setMovie={this.setMovie} />
             </Col>
           </Row>
-          <Row>
-            <Col md={{ span: 6, offset: 3 }}>
-              <MovieDetail selectedMovie={this.state.movieTitle} />
-            </Col>
-          </Row>
+          <Button onClick={() => this.setState({ showMovie: !this.state.showMovie })}>SHOW MOVIE</Button>
+          {this.state.showMovie && (
+            <Row>
+              <Col md={{ span: 6, offset: 3 }}>
+                <MovieDetail selectedMovie={this.state.movieTitle} />
+              </Col>
+            </Row>
+          )}
         </Container>
       </div>
     )
